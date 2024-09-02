@@ -6,6 +6,15 @@ import 'package:another_flushbar/flushbar.dart';
 
 class Utils{
 
+  static void filedFocusChange(
+      BuildContext context,
+      FocusNode current,
+      FocusNode next
+      ){
+    current.unfocus();
+    FocusScope.of(context).requestFocus(next);
+  }
+
    static toastMessage(String message){
     Fluttertoast.showToast(msg: message);
   }
