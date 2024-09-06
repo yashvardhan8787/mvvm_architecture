@@ -1,19 +1,20 @@
-import "package:flutter/cupertino.dart";
-import "package:flutter/material.dart";
-import "package:mvvm_architecture/res/components/round_buttons.dart";
-import "package:mvvm_architecture/utils/routes/routes_names.dart";
-import "package:mvvm_architecture/utils/utils.dart";
-import "package:mvvm_architecture/view_model/auth_view_model.dart";
-import "package:provider/provider.dart";
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:mvvm_architecture/utils/utils.dart';
+import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+import '../res/components/round_buttons.dart';
+import '../utils/routes/routes_names.dart';
+import '../view_model/auth_view_model.dart';
+
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupViewState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupViewState extends State<SignupScreen> {
 
   ValueNotifier<bool> _obsecurePassWord = ValueNotifier<bool>(true);
 
@@ -40,28 +41,28 @@ class _LoginScreenState extends State<LoginScreen> {
     final height = MediaQuery.of(context).size.height * 1.0 ;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Login"),
+        title: Text("Sign Up"),
         centerTitle: true,
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment:  CrossAxisAlignment.center,
         children: [
-         TextFormField(
-           controller: emailController,
-           keyboardType: TextInputType.emailAddress,
-           focusNode:emailFocusNode,
-           decoration: InputDecoration(
-             hintText:"Email" ,
-             labelText:"Email" ,
-             prefixIcon: Icon(Icons.alternate_email_rounded)
-           ),
-           onFieldSubmitted: (value){
-           Utils.filedFocusChange(context, emailFocusNode, passwordFocusNode);
-           },
-         ),
+          TextFormField(
+            controller: emailController,
+            keyboardType: TextInputType.emailAddress,
+            focusNode:emailFocusNode,
+            decoration: InputDecoration(
+                hintText:"Email" ,
+                labelText:"Email" ,
+                prefixIcon: Icon(Icons.alternate_email_rounded)
+            ),
+            onFieldSubmitted: (value){
+              Utils.filedFocusChange(context, emailFocusNode, passwordFocusNode);
+            },
+          ),
           ValueListenableBuilder(
-            valueListenable: _obsecurePassWord,
+              valueListenable: _obsecurePassWord,
               builder: (context, value , child) {
                 return TextFormField(
                   controller: passwordController,
@@ -69,22 +70,22 @@ class _LoginScreenState extends State<LoginScreen> {
                   focusNode: passwordFocusNode,
                   obscuringCharacter: "*",
                   decoration: InputDecoration(
-                    hintText: "Password",
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.password),
-                    suffixIcon: InkWell(
-                      onTap: (){
-                        _obsecurePassWord.value = !_obsecurePassWord.value;
-                      },
-                        child:_obsecurePassWord.value? Icon(Icons.visibility_off):Icon(Icons.visibility))
+                      hintText: "Password",
+                      labelText: "Password",
+                      prefixIcon: Icon(Icons.password),
+                      suffixIcon: InkWell(
+                          onTap: (){
+                            _obsecurePassWord.value = !_obsecurePassWord.value;
+                          },
+                          child:_obsecurePassWord.value? Icon(Icons.visibility_off):Icon(Icons.visibility))
                   ),
                 );
               }
-            ),
+          ),
           SizedBox(height: height * .1,),
           RoundButtons(
-            title: "SignUp",
-            loading: authViewModel.loading,
+            title: "Login",
+            loading: authViewModel.signuploading,
             onPress: () {
               if (emailController.text.isEmpty) {
                 Utils.flushBarErrorMessage("Email is required", context);
@@ -98,18 +99,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   'password': passwordController.text, // Corrected text extraction
                 };
 
-                authViewModel.loginApi(data, context);
+                authViewModel.signupApi(data, context);
               }
             },
           ),
           SizedBox( height: height * 0.002,),
           InkWell(
               onTap:(){
-              Navigator.pushNamed(context, RoutesNames.signup);
+                Navigator.pushNamed(context, RoutesNames.login);
               },
-              child: Text("Don't have an account? sign up"))
-
-
+              child: Text("Already have an account? login"))
         ],
       ),
     );

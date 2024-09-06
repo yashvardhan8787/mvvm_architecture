@@ -8,5 +8,5 @@ class AppUrls{
 
   static var registerEndPnt = baseUrl+"/api/register";
 
-
+  static var productsEndPnt = "https://dummyjson.com/products" ;
 }
